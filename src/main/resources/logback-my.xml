@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 这段引入会引起打印两遍日志 -->
+    <!--<include resource="org/springframework/boot/logging/logback/base.xml" />-->
+
+    <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] %c [%L] - %m%n" />
+    <!-- test文件路径 -->
+    <!--<property name="TEST_FILE_PATH" value="F:/jandetech/logs/test" />-->
+    <property name="PROD_FILE_PATH" value="/opt/servers/iot-boss/logs" />
+
+    <!-- 开发环境 -->
+    <springProfile name="prod">
+        <appender name="PROD-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <!-- 文件路径 -->
+            <file>${TEST_FILE_PATH}</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- 文件名称 -->
+                <fileNamePattern>${PROD_FILE_PATH}/info.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <!-- 文件最大保存历史数量 -->
+                <MaxHistory>100</MaxHistory>
+            </rollingPolicy>
+
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>${PATTERN}</pattern>
+            </layout>
+        </appender>
+
+        <!-- 开发环境，打印SQL语句 -->
+        <logger name="com.minorfish.iot.dao.mybatis" level="WARN" />
+
+        <root level="WARN">
+            <appender-ref ref="PROD-FILE" />
+        </root>
+    </springProfile>
+
+    <!-- 开发环境 -->
+    <springProfile name="dev">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${PATTERN}</pattern>
+            </encoder>
+        </appender>
+
+        <!-- 开发环境，打印SQL语句 -->
+
+        <root level="info">
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+
+    <!-- 测试环境 -->
+    <springProfile name="test">
+        <!-- 每天产生一个文件 -->
+        <appender name="TEST-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <!-- 文件路径 -->
+            <file>${TEST_FILE_PATH}</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- 文件名称 -->
+                <fileNamePattern>${TEST_FILE_PATH}/info.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <!-- 文件最大保存历史数量 -->
+                <MaxHistory>100</MaxHistory>
+            </rollingPolicy>
+
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>${PATTERN}</pattern>
+            </layout>
+        </appender>
+
+        <root level="info">
+            <appender-ref ref="TEST-FILE" />
+        </root>
+    </springProfile>
+</configuration>

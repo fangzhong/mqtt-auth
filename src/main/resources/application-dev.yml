@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.2.242:3306/minor-iot?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
+    username: root
+    password: minorfish
+influxdb:
+  url: http://192.168.2.240:8086
+  username: root
+  password: root
+  database: minorfish-iot
+  retention-policy: autogen
+redis:
+  host: 192.168.2.244
+  port: 6379
+  timeout: 5000
+  password: admin123
+  database: 0
+  pool:
+    maxTotal: 30
+    maxIdle: 30
+    minIdle: 0
+    maxWaitMillis: 5000
+
+    testOnBorrow: false
+    testWhileIdle: false
+    testOnCreate: false
+    testOnReturn: false
+
+    blockWhenExhausted: true
+    lifo: true
+
+    jmxEnabled: true
+    jmxNamePrefix: pool
+    jmxNameBase:
+
+    evictionPolicyClassName: org.apache.commons.pool2.impl.DefaultEvictionPolicy
+    minEvictableIdleTimeMillis: 1800000
+    numTestsPerEvictionRun: 3
+    softMinEvictableIdleTimeMillis: 1800000
+    timeBetweenEvictionRunsMillis: -1
